@@ -41,4 +41,49 @@ public class BookController {
     public void deleteBook(@PathVariable Long id) {
         bookService.deleteBook(id);
     }
+
+    /**
+     * Search books by keyword across title, author, and ISBN
+     * GET /api/books/search?query=keyword
+     */
+    @GetMapping("/search")
+    public List<Book> searchBooks(@RequestParam(value = "query", required = false) String query) {
+        return bookService.searchBooks(query);
+    }
+
+    /**
+     * Search books by title
+     * GET /api/books/search/title?title=keyword
+     */
+    @GetMapping("/search/title")
+    public List<Book> searchByTitle(@RequestParam String title) {
+        return bookService.searchByTitle(title);
+    }
+
+    /**
+     * Search books by author
+     * GET /api/books/search/author?author=keyword
+     */
+    @GetMapping("/search/author")
+    public List<Book> searchByAuthor(@RequestParam String author) {
+        return bookService.searchByAuthor(author);
+    }
+
+    /**
+     * Search books by ISBN
+     * GET /api/books/search/isbn?isbn=value
+     */
+    @GetMapping("/search/isbn")
+    public List<Book> searchByIsbn(@RequestParam String isbn) {
+        return bookService.searchByIsbn(isbn);
+    }
+
+    /**
+     * Search books by published year
+     * GET /api/books/search/year?year=value
+     */
+    @GetMapping("/search/year")
+    public List<Book> searchByYear(@RequestParam Integer year) {
+        return bookService.searchByPublishedYear(year);
+    }
 }
