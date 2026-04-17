@@ -26,6 +26,7 @@ function App() {
   const [searchQuery, setSearchQuery] = useState('')
   const [isSearching, setIsSearching] = useState(false)
   const [searchType, setSearchType] = useState<'all' | 'title' | 'author' | 'isbn' | 'year'>('all')
+  const [showAddBookModal, setShowAddBookModal] = useState(false)
 
   useEffect(() => {
     fetchBooks()
@@ -112,10 +113,60 @@ function App() {
       await axios.post('http://localhost:8080/api/books', payload)
       fetchBooks()
       setNewBook({ title: '', author: '' })
+      setShowAddBookModal(false) // Close modal after successful add
     } catch (error) {
       console.error('Error adding book:', error)
     }
   }
+
+  const handleAddBookClick = (e: React.MouseEvent) => {
+    e.preventDefault()
+    setShowAddBookModal(true)
+  }
+
+  const closeAddBookModal = () => {
+    setShowAddBookModal(false)
+    setNewBook({ title: '', author: '' }) // Reset form when closing
+  }
+
+  // Close modal when clicking outside
+  const handleModalBackdropClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      closeAddBookModal()
+    }
+  }
+
+  // Close modal on Escape key
+  useEffect(() => {
+    const handleEscapeKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && showAddBookModal) {
+        closeAddBookModal()
+      }
+    }
+
+    document.addEventListener('keydown', handleEscapeKey)
+    return () => document.removeEventListener('keydown', handleEscapeKey)
+  }, [showAddBookModal])
+
+  // Focus management for modal
+  useEffect(() => {
+    if (showAddBookModal) {
+      // Prevent body scroll when modal is open
+      document.body.style.overflow = 'hidden'
+      // Focus the first input when modal opens
+      const firstInput = document.querySelector('.modal-form-group input') as HTMLInputElement
+      if (firstInput) {
+        setTimeout(() => firstInput.focus(), 100)
+      }
+    } else {
+      // Restore body scroll when modal closes
+      document.body.style.overflow = 'unset'
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset'
+    }
+  }, [showAddBookModal])
 
   const deleteBook = async (id: number) => {
     try {
@@ -142,7 +193,7 @@ function App() {
             <ul>
               <li><a href="#home">Home</a></li>
               <li><a href="#books">Browse Books</a></li>
-              <li><a href="#add">Add Book</a></li>
+              <li><a href="#add" onClick={handleAddBookClick}>Add Book</a></li>
             </ul>
           </nav>
         </div>
@@ -188,114 +239,6 @@ function App() {
                 {isSearching && <button type="button" onClick={clearSearch} className="clear-btn">Clear</button>}
               </div>
             </form>
-          </div>
-        </section>
-
-        {/* Add Book Section */}
-        <section id="add" className="add-book-section">
-          <div className="section-container">
-            <h2>Add new book</h2>
-            <div className="form-group">
-              <input
-                type="text"
-                placeholder="Book Title"
-                value={newBook.title}
-                onChange={(e) => setNewBook({ ...newBook, title: e.target.value })}
-                aria-label="Book title"
-              />
-              <input
-                type="text"
-                placeholder="Author Name"
-                value={newBook.author}
-                onChange={(e) => setNewBook({ ...newBook, author: e.target.value })}
-                aria-label="Author name"
-              />
-              <input
-                type="text"
-                placeholder="ISBN"
-                value={newBook.isbn ?? ''}
-                onChange={(e) => setNewBook({ ...newBook, isbn: e.target.value })}
-                aria-label="ISBN"
-              />
-              <input
-                type="number"
-                placeholder="Published Year"
-                value={newBook.publishedYear ?? ''}
-                onChange={(e) => {
-                  const v = e.target.value.trim()
-                  setNewBook({ ...newBook, publishedYear: v ? parseInt(v, 10) : undefined })
-                }}
-                aria-label="Published year"
-              />
-              <input
-                type="text"
-                placeholder="Publisher"
-                value={newBook.publisher ?? ''}
-                onChange={(e) => setNewBook({ ...newBook, publisher: e.target.value })}
-                aria-label="Publisher"
-              />
-              <input
-                type="text"
-                placeholder="Genre"
-                value={newBook.genre ?? ''}
-                onChange={(e) => setNewBook({ ...newBook, genre: e.target.value })}
-                aria-label="Genre"
-              />
-              <select
-                value={newBook.targetAudience ?? ''}
-                onChange={(e) => {
-                  const v = e.target.value as TargetAudience | ''
-                  setNewBook({ ...newBook, targetAudience: v || undefined })
-                }}
-                aria-label="Target audience"
-              >
-                <option value="">Target audience (optional)</option>
-                <option value="CHILDREN">Children</option>
-                <option value="YOUNG_ADULT">Young adult</option>
-                <option value="ADULT">Adult</option>
-                <option value="ACADEMIC">Academic</option>
-              </select>
-              <input
-                type="text"
-                placeholder="Country (e.g., US, IT)"
-                value={newBook.country ?? ''}
-                onChange={(e) => setNewBook({ ...newBook, country: e.target.value })}
-                aria-label="Country"
-              />
-              <input
-                type="text"
-                placeholder="Language (e.g., en, it, en-US)"
-                value={newBook.language ?? ''}
-                onChange={(e) => setNewBook({ ...newBook, language: e.target.value })}
-                aria-label="Language"
-              />
-              <input
-                type="number"
-                placeholder="Number of pages"
-                value={newBook.pageCount ?? ''}
-                onChange={(e) => {
-                  const v = e.target.value.trim()
-                  setNewBook({ ...newBook, pageCount: v ? parseInt(v, 10) : undefined })
-                }}
-                aria-label="Number of pages"
-                min={1}
-              />
-              <input
-                type="text"
-                placeholder="Cover image URL"
-                value={newBook.coverImageUrl ?? ''}
-                onChange={(e) => setNewBook({ ...newBook, coverImageUrl: e.target.value })}
-                aria-label="Cover image URL"
-              />
-              <input
-                type="text"
-                placeholder="Short description"
-                value={newBook.description ?? ''}
-                onChange={(e) => setNewBook({ ...newBook, description: e.target.value })}
-                aria-label="Description"
-              />
-              <button onClick={addBook} className="add-btn">Add Book</button>
-            </div>
           </div>
         </section>
 
@@ -367,6 +310,152 @@ function App() {
           </div>
         </section>
       </main>
+
+      {/* Add Book Modal */}
+      {showAddBookModal && (
+        <div className="modal-backdrop" onClick={handleModalBackdropClick}>
+          <div className="modal-content" role="dialog" aria-labelledby="modal-title" aria-modal="true">
+            <div className="modal-header">
+              <h2 id="modal-title">Add New Book</h2>
+              <button 
+                className="modal-close-btn" 
+                onClick={closeAddBookModal}
+                aria-label="Close modal"
+              >
+                ×
+              </button>
+            </div>
+            <div className="modal-body">
+              <div className="modal-form-group">
+                <div className="form-row">
+                  <input
+                    type="text"
+                    placeholder="Book Title *"
+                    value={newBook.title}
+                    onChange={(e) => setNewBook({ ...newBook, title: e.target.value })}
+                    aria-label="Book title"
+                    required
+                  />
+                  <input
+                    type="text"
+                    placeholder="Author Name *"
+                    value={newBook.author}
+                    onChange={(e) => setNewBook({ ...newBook, author: e.target.value })}
+                    aria-label="Author name"
+                    required
+                  />
+                </div>
+                <div className="form-row">
+                  <input
+                    type="text"
+                    placeholder="ISBN"
+                    value={newBook.isbn ?? ''}
+                    onChange={(e) => setNewBook({ ...newBook, isbn: e.target.value })}
+                    aria-label="ISBN"
+                  />
+                  <input
+                    type="number"
+                    placeholder="Published Year"
+                    value={newBook.publishedYear ?? ''}
+                    onChange={(e) => {
+                      const v = e.target.value.trim()
+                      setNewBook({ ...newBook, publishedYear: v ? parseInt(v, 10) : undefined })
+                    }}
+                    aria-label="Published year"
+                  />
+                </div>
+                <div className="form-row">
+                  <input
+                    type="text"
+                    placeholder="Publisher"
+                    value={newBook.publisher ?? ''}
+                    onChange={(e) => setNewBook({ ...newBook, publisher: e.target.value })}
+                    aria-label="Publisher"
+                  />
+                  <input
+                    type="text"
+                    placeholder="Genre"
+                    value={newBook.genre ?? ''}
+                    onChange={(e) => setNewBook({ ...newBook, genre: e.target.value })}
+                    aria-label="Genre"
+                  />
+                </div>
+                <div className="form-row">
+                  <select
+                    value={newBook.targetAudience ?? ''}
+                    onChange={(e) => {
+                      const v = e.target.value as TargetAudience | ''
+                      setNewBook({ ...newBook, targetAudience: v || undefined })
+                    }}
+                    aria-label="Target audience"
+                  >
+                    <option value="">Target audience (optional)</option>
+                    <option value="CHILDREN">Children</option>
+                    <option value="YOUNG_ADULT">Young adult</option>
+                    <option value="ADULT">Adult</option>
+                    <option value="ACADEMIC">Academic</option>
+                  </select>
+                  <input
+                    type="text"
+                    placeholder="Country (e.g., US, IT)"
+                    value={newBook.country ?? ''}
+                    onChange={(e) => setNewBook({ ...newBook, country: e.target.value })}
+                    aria-label="Country"
+                  />
+                </div>
+                <div className="form-row">
+                  <input
+                    type="text"
+                    placeholder="Language (e.g., en, it, en-US)"
+                    value={newBook.language ?? ''}
+                    onChange={(e) => setNewBook({ ...newBook, language: e.target.value })}
+                    aria-label="Language"
+                  />
+                  <input
+                    type="number"
+                    placeholder="Number of pages"
+                    value={newBook.pageCount ?? ''}
+                    onChange={(e) => {
+                      const v = e.target.value.trim()
+                      setNewBook({ ...newBook, pageCount: v ? parseInt(v, 10) : undefined })
+                    }}
+                    aria-label="Number of pages"
+                    min={1}
+                  />
+                </div>
+                <div className="form-row full-width">
+                  <input
+                    type="text"
+                    placeholder="Cover image URL"
+                    value={newBook.coverImageUrl ?? ''}
+                    onChange={(e) => setNewBook({ ...newBook, coverImageUrl: e.target.value })}
+                    aria-label="Cover image URL"
+                  />
+                </div>
+                <div className="form-row full-width">
+                  <textarea
+                    placeholder="Short description"
+                    value={newBook.description ?? ''}
+                    onChange={(e) => setNewBook({ ...newBook, description: e.target.value })}
+                    aria-label="Description"
+                    rows={3}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button onClick={closeAddBookModal} className="cancel-btn">Cancel</button>
+              <button 
+                onClick={addBook} 
+                className="add-btn"
+                disabled={!newBook.title.trim() || !newBook.author.trim()}
+              >
+                Add Book
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <footer className="app-footer">
         <div className="footer-container">
