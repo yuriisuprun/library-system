@@ -1,20 +1,20 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
   <defs>
-    <!-- Gradient for book spine -->
+    <!-- Gradient for book spine - black theme -->
     <linearGradient id="spineGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#f59e0b;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#d97706;stop-opacity:1" />
+      <stop offset="0%" style="stop-color:#2c2c2c;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1a1a1a;stop-opacity:1" />
     </linearGradient>
 
-    <!-- Gradient for book cover -->
+    <!-- Gradient for book cover - black theme -->
     <linearGradient id="coverGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:1" />
+      <stop offset="0%" style="stop-color:#404040;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2c2c2c;stop-opacity:1" />
     </linearGradient>
 
     <!-- Shadow filter for depth -->
     <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
-      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.2"/>
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-opacity="0.15"/>
     </filter>
   </defs>
 
@@ -23,32 +23,35 @@
 
   <!-- Book left cover/spine -->
   <path d="M 28 25 L 28 75 Q 28 78 31 78 L 50 78 L 50 25 Z"
-        fill="url(#spineGradient)" stroke="#b45309" stroke-width="0.5" />
+        fill="url(#spineGradient)" stroke="#0f0f0f" stroke-width="0.5" />
 
   <!-- Book right cover -->
   <path d="M 50 25 L 50 78 L 69 78 Q 72 78 72 75 L 72 25 Z"
-        fill="url(#coverGradient)" stroke="#b45309" stroke-width="0.5" />
+        fill="url(#coverGradient)" stroke="#0f0f0f" stroke-width="0.5" />
 
   <!-- Book spine edge highlight -->
-  <ellipse cx="50" cy="78" rx="22" ry="3" fill="#f59e0b" opacity="0.6" />
+  <ellipse cx="50" cy="78" rx="22" ry="3" fill="#1a1a1a" opacity="0.4" />
 
   <!-- Center spine/binding line -->
-  <line x1="50" y1="22" x2="50" y2="80" stroke="#b45309" stroke-width="1.5" opacity="0.7" />
+  <line x1="50" y1="22" x2="50" y2="80" stroke="#0f0f0f" stroke-width="1.5" opacity="0.8" />
 
   <!-- Left page content - decorative lines -->
-  <line x1="34" y1="35" x2="46" y2="35" stroke="#78350f" stroke-width="1" opacity="0.4" />
-  <line x1="34" y1="42" x2="46" y2="42" stroke="#78350f" stroke-width="1" opacity="0.4" />
-  <line x1="34" y1="49" x2="46" y2="49" stroke="#78350f" stroke-width="1" opacity="0.4" />
-  <line x1="34" y1="56" x2="46" y2="56" stroke="#78350f" stroke-width="1" opacity="0.4" />
-  <line x1="34" y1="63" x2="46" y2="63" stroke="#78350f" stroke-width="1" opacity="0.4" />
+  <line x1="34" y1="35" x2="46" y2="35" stroke="#666666" stroke-width="1" opacity="0.6" />
+  <line x1="34" y1="42" x2="46" y2="42" stroke="#666666" stroke-width="1" opacity="0.6" />
+  <line x1="34" y1="49" x2="46" y2="49" stroke="#666666" stroke-width="1" opacity="0.6" />
+  <line x1="34" y1="56" x2="46" y2="56" stroke="#666666" stroke-width="1" opacity="0.6" />
+  <line x1="34" y1="63" x2="46" y2="63" stroke="#666666" stroke-width="1" opacity="0.6" />
 
   <!-- Right page content - decorative lines -->
-  <line x1="54" y1="35" x2="66" y2="35" stroke="#78350f" stroke-width="1" opacity="0.4" />
-  <line x1="54" y1="42" x2="66" y2="42" stroke="#78350f" stroke-width="1" opacity="0.4" />
-  <line x1="54" y1="49" x2="66" y2="49" stroke="#78350f" stroke-width="1" opacity="0.4" />
-  <line x1="54" y1="56" x2="66" y2="56" stroke="#78350f" stroke-width="1" opacity="0.4" />
-  <line x1="54" y1="63" x2="66" y2="63" stroke="#78350f" stroke-width="1" opacity="0.4" />
+  <line x1="54" y1="35" x2="66" y2="35" stroke="#666666" stroke-width="1" opacity="0.6" />
+  <line x1="54" y1="42" x2="66" y2="42" stroke="#666666" stroke-width="1" opacity="0.6" />
+  <line x1="54" y1="49" x2="66" y2="49" stroke="#666666" stroke-width="1" opacity="0.6" />
+  <line x1="54" y1="56" x2="66" y2="56" stroke="#666666" stroke-width="1" opacity="0.6" />
+  <line x1="54" y1="63" x2="66" y2="63" stroke="#666666" stroke-width="1" opacity="0.6" />
 
-  <!-- Highlight on cover for glossy effect -->
-  <ellipse cx="62" cy="35" rx="4" ry="6" fill="#ffffff" opacity="0.4" />
+  <!-- Highlight on cover for subtle glossy effect -->
+  <ellipse cx="62" cy="35" rx="4" ry="6" fill="#ffffff" opacity="0.2" />
+  
+  <!-- Additional modern touch - small accent dot -->
+  <circle cx="38" cy="32" r="1.5" fill="#666666" opacity="0.8" />
 </svg>
