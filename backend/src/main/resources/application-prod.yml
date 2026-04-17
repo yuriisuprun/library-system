@@ -1,0 +1,53 @@
+# Production Profile Configuration
+# This configuration is used when running with --spring.profiles.active=prod
+
+spring:
+  # Production Database Configuration
+  datasource:
+    # In production, you would typically use a persistent database like PostgreSQL or MySQL
+    # For now, keeping H2 but with file persistence
+    url: jdbc:h2:file:/opt/library/data/librarydb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    
+  # H2 Console Configuration (disabled for production)
+  h2:
+    console:
+      enabled: false
+  
+  # JPA Configuration for Production
+  jpa:
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+        use_sql_comments: false
+        
+  # Flyway Production Configuration
+  flyway:
+    clean-disabled: true  # Never allow clean in production
+    validate-on-migrate: true
+    
+# Production Logging Configuration
+logging:
+  level:
+    com.example.library: INFO
+    org.springframework.web: WARN
+    org.hibernate.SQL: WARN
+    org.flywaydb: INFO
+    root: WARN
+  file:
+    name: /opt/library/logs/library.log
+  pattern:
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+    
+# Production Management Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,flyway
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: never
+  server:
+    port: 8081  # Different port for management endpoints
