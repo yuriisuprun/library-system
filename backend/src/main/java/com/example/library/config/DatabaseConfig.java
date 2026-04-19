@@ -13,7 +13,7 @@ import javax.sql.DataSource;
 
 /**
  * Database configuration class that handles Flyway setup and migration strategy.
- * 
+
  * Best practices implemented:
  * - Custom migration strategy for better control
  * - Proper logging for monitoring
