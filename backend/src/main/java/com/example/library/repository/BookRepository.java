@@ -11,24 +11,12 @@ import java.util.List;
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
 
-    /**
-     * Search books by title (case-insensitive)
-     */
     List<Book> findByTitleIgnoreCaseContaining(String title);
 
-    /**
-     * Search books by author (case-insensitive)
-     */
     List<Book> findByAuthorIgnoreCaseContaining(String author);
 
-    /**
-     * Search books by ISBN
-     */
     List<Book> findByIsbn(String isbn);
 
-    /**
-     * Search books by published year
-     */
     List<Book> findByPublishedYear(Integer publishedYear);
 
     /**
